@@ -25,7 +25,7 @@ profile::base::remote_syslog: []
 profile::base::remote_syslog_tls: []
 
 ## Customizations
-#pontoon::stack: 'your_stack'
+pontoon::stack: 'mariadb104-test'
 
 profile::base::use_apt_proxy: false
 
@@ -40,3 +40,18 @@ cache_hosts:
 manage_puppet_ca_file: false
 puppetmaster: "%{alias('__master_for_role_puppetmaster__pontoon')}"
 puppet_ca_server: "%{alias('__master_for_role_puppetmaster__pontoon')}"
+
+# PuppetDB
+profile::puppetmaster::common::puppetdb_hosts: "%{alias('__hosts_for_role_puppetmaster__puppetdb')}"
+profile::puppetmaster::common::storeconfigs: puppetdb
+puppetdb_host: "%{alias('__master_for_role_puppetmaster__puppetdb')}"
+profile::puppetdb::master: "%{alias('__master_for_role_puppetmaster__puppetdb')}"
+profile::puppetdb::jvm_opts: '-Xmx256m'
+
+# To open puppetdb firewall
+puppetmaster::servers:
+  pontoon:
+    - { worker: "%{alias('__master_for_role_puppetmaster__pontoon')}", loadfactor: 10 }
+
+cumin_masters:
+  - 172.16.2.34 # cumin.mariadb104-test.eqiad.wmflabs

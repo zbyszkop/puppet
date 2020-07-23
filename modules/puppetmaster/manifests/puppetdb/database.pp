@@ -45,7 +45,7 @@ class puppetmaster::puppetdb::database(
     $on_master = ($master == $::fqdn)
     if $on_master {
         class { '::postgresql::master':
-            includes => ['tuning.conf'],
+            #includes => ['tuning.conf'],
             root_dir => '/srv/postgres',
             use_ssl  => true,
             ssldir   => $ssldir,
